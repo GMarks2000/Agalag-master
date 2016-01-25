@@ -1,6 +1,6 @@
-﻿/* made by Gareth marks
+﻿/* Made by Gareth marks
 Finished January 22
-As a final project in computer science
+As an entertaining one or two player game
 CONTROLS:
 P1 uses WASD to move and Space to shoot
 P2 uses IJKL to move and M to shoot
@@ -270,6 +270,7 @@ namespace Agalag
                 }
             }
         }
+
         //*****************KEYUP METHOD*****************************
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
@@ -295,10 +296,9 @@ namespace Agalag
                         break;
                     default:
                         break;
-                }
-
-                //TWO PLAYER CASE
+                }              
             }
+
             else if (gameState == "two player")
             {
                 switch (e.KeyCode)
@@ -391,9 +391,11 @@ namespace Agalag
                         default:
                             break;
                     }
+
                     shotPlayer.Open(new System.Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "laserShot.mp3")));//sets pewplayer's sound
                     shotPlayer.Play();//plays shot sound
                 }
+
                 else if (bulletModulator > 2) { playerFiring = false; }
 
                 moveP1();
@@ -440,20 +442,21 @@ namespace Agalag
                             {
                                 switch (enemyTypeValues[j])//determines hitbox based on enemy type
                                 {
+                                    //uses distance formula to check for collision
                                     case "light":
-                                        if (calculateDistance(bulletXValues[i], enemyXValues[j], bulletYValues[i], enemyYValues[j]) < 30)//uses distance formula to check for collision
+                                        if (calculateDistance(bulletXValues[i], enemyXValues[j], bulletYValues[i], enemyYValues[j]) < 30)
                                         {
                                             enemyHit = true;
                                         }
                                         break;
                                     case "dynamic":
-                                        if (calculateDistance(bulletXValues[i], enemyXValues[j], bulletYValues[i], enemyYValues[j]) < 60)//uses distance formula to check for collision
+                                        if (calculateDistance(bulletXValues[i], enemyXValues[j], bulletYValues[i], enemyYValues[j]) < 60)
                                         {
                                             enemyHit = true;
                                         }
                                         break;
                                     case "heavy":
-                                        if (calculateDistance(bulletXValues[i], enemyXValues[j], bulletYValues[i], enemyYValues[j]) < 80)//uses distance formula to check for collision
+                                        if (calculateDistance(bulletXValues[i], enemyXValues[j], bulletYValues[i], enemyYValues[j]) < 80)
                                         {
                                             enemyHit = true;
                                         }
@@ -479,11 +482,13 @@ namespace Agalag
                                     removeBullets(i);
                                     break;
                             }
+
                             hitPlayer.Open(new System.Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "boom.wav")));//sets boomplayer's sound
                             hitPlayer.Play();//plays hit sound
                         }
                     }
                 }
+
                 for (int i = 0; i < 199; i++)
                 {
                     starYValues[i] += starSizeValues[i] * 0.05;
@@ -527,6 +532,7 @@ namespace Agalag
                                 explosionYMod = 40;
                                 break;
                         }
+
                         //kills player and enemy on collision
                         if (calculateDistance(enemyXValues[i], playerX, enemyYValues[i], playerY) < 40)
                         {
@@ -534,6 +540,7 @@ namespace Agalag
 
                             enemyHealths[i] = 0;
                         }
+
                         if (enemyHealths[i] <= 0)
                         {
                             //adds explosion to defeated enemies
@@ -547,8 +554,6 @@ namespace Agalag
 
                             removeEnemies(i);
                             score += scoreMod;
-
-
                         }
                     }
                 }
@@ -695,7 +700,8 @@ namespace Agalag
                 }
 
                 int powerupRand = rand.Next(0, 501);//1 in 500 chance of a powerup spawn
-                if (powerupRand == 500 && timeSincePowerup > 300)
+
+                if (powerupRand == 500 && timeSincePowerup > 300)//only spawns powerup if random is 500 and there have been 300 frames since last spawn
                 {
                     //starts powerup at a random x at the top of the screen
                     powerupXValues.Add(rand.Next(0, this.Width - 50));
@@ -737,13 +743,15 @@ namespace Agalag
                                     playerFast = true;
                                     break;
                             }
-                            removePowerups(i);
-                            collectPlayer.Open(new System.Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "collectSound.wav")));//sets collectplayer's sound
-                            collectPlayer.Play();//plays collect sound
 
+                            removePowerups(i);
+
+                            collectPlayer.Open(new System.Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "collectSound.wav")));//sets collectplayer's sound
+                            collectPlayer.Play();//plays collect sound                      
                         }
                     }
                 }
+
                 //makes player vulnerable if they have been invincible for more than 15 seconds
                 if (playerInvincible && invincibilityWatch.Elapsed.TotalHours >= 0.00416)//approx 15 secs invincibility
                 {
@@ -751,6 +759,7 @@ namespace Agalag
                     invincibilityWatch.Reset();
                     playerInvincible = false;
                 }
+
                 //makes player normal if they have been fast for more than 15 seconds
                 if (playerFast && speedWatch.Elapsed.TotalHours >= 0.00632)//approx 22 secs speed
                 {
@@ -793,14 +802,17 @@ namespace Agalag
                             enemyStartXes.Add(startX);//used to allow a sine wave pattern.
                             if (enemySpawnRate == 5) { enemySpawnRate = 0; }
                         }
+
                         enemySpawnRate += 1;
                     }
+
                     else if (tracker > 2000 && tracker <= 3000)
                     {
                         double screenDiv = this.Width / enemySpawnRate;//used to evenly distribute enemies across screen
                         for (int i = 0; i < enemySpawnRate; i += 1)
                         {
                             int startX = (i * Convert.ToInt16(screenDiv) + Convert.ToInt16(screenDiv) / 2 - 30);
+
                             enemyXValues.Add(startX);
                             enemyYValues.Add(-50 + (rand.Next(-50, 51)));//randomises Y within 100 pixels
                             enemyTypeValues.Add("heavy");
@@ -808,19 +820,23 @@ namespace Agalag
                             enemyStartXes.Add(startX);
                             if (enemySpawnRate == 5) { enemySpawnRate = 0; }
                         }
+
                         enemySpawnRate += 1;
                     }
+
                     else if (tracker > 3000 && tracker <= 5000)
                     {
                         double screenDiv = this.Width / enemySpawnRate;//used to evenly distribute enemies across screen
                         for (int i = 0; i < enemySpawnRate; i += 1)
                         {
                             int startX = (i * Convert.ToInt16(screenDiv) + Convert.ToInt16(screenDiv) / 2 - 30);
+
                             enemyXValues.Add(startX);
                             enemyYValues.Add(-50 + (rand.Next(-50, 51)));//randomises Y within 100 pixels
 
                             int typeRand = rand.Next(0, 2);//randomises enemy type
 
+                            //determines type to spawn
                             switch (typeRand)
                             {
                                 case 0:
@@ -836,6 +852,7 @@ namespace Agalag
                             enemyStartXes.Add(startX);
                             if (enemySpawnRate == 7) { enemySpawnRate = 5; }
                         }
+
                         enemySpawnRate += 1;
                     }
                     else if (tracker > 5000 && tracker <= 7000)
@@ -844,11 +861,13 @@ namespace Agalag
                         for (int i = 0; i < enemySpawnRate; i += 1)
                         {
                             int startX = (i * Convert.ToInt16(screenDiv) + Convert.ToInt16(screenDiv) / 2 - 30);
+
                             enemyXValues.Add(startX);
                             enemyYValues.Add(-50 + (rand.Next(-50, 51)));//randomises Y within 100 pixels
 
                             int typeRand = rand.Next(0, 2);//randomises enemy type
 
+                            //determines type to spawn
                             switch (typeRand)
                             {
                                 case 0:
@@ -862,8 +881,10 @@ namespace Agalag
                             }
 
                             enemyStartXes.Add(startX);
+
                             if (enemySpawnRate == 8) { enemySpawnRate = 6; }
                         }
+
                         enemySpawnRate += 1;
                     }
                     else if (tracker > 7000 && tracker <= 9000)
@@ -872,11 +893,13 @@ namespace Agalag
                         for (int i = 0; i < enemySpawnRate; i += 1)
                         {
                             int startX = (i * Convert.ToInt16(screenDiv) + Convert.ToInt16(screenDiv) / 2 - 30);
+
                             enemyXValues.Add(startX);
                             enemyYValues.Add(-50 + (rand.Next(-50, 51)));//randomises Y within 100 pixels
 
                             int typeRand = rand.Next(0, 2);//randomises enemy type
 
+                            //determines type to spawn
                             switch (typeRand)
                             {
                                 case 0:
@@ -899,11 +922,13 @@ namespace Agalag
                         for (int i = 0; i < enemySpawnRate; i += 1)
                         {
                             int startX = (i * Convert.ToInt16(screenDiv) + Convert.ToInt16(screenDiv) / 2 - 30);
+
                             enemyXValues.Add(startX);
                             enemyYValues.Add(-50 + (rand.Next(-50, 51)));//randomises Y within 100 pixels
 
                             int typeRand = rand.Next(0, 3);//randomises enemy type
 
+                            //determines type to spawn
                             switch (typeRand)
                             {
                                 case 0:
@@ -922,11 +947,14 @@ namespace Agalag
 
                             enemyStartXes.Add(startX);
                         }
+
                         enemySpawnRate += 1;
                     }
                 }
                 //******************ENEMY FIRE PATTERNS*************************************************
-                if (tracker % 50 == 0)//light enemies fire every 50 frames
+
+                //light bullet spawns
+                if (tracker % 50 == 0)
                 {
                     for (int i = 0; i < enemyXValues.Count(); i++)
                     {
@@ -934,12 +962,12 @@ namespace Agalag
                         {
                             enemyBulletXValues.Add(enemyXValues[i] + 15);
                             enemyBulletYValues.Add(enemyYValues[i] + 55);
-
-
                         }
                     }
                 }
-                if (tracker % 25 == 0)
+
+                //dynamic bullet spawns
+                if (tracker % 35 == 0)
                 {
                     for (int i = 0; i < enemyXValues.Count(); i++)
                     {
@@ -947,6 +975,7 @@ namespace Agalag
                         {
                             enemyDynamicBulletXValues.Add(enemyXValues[i] + 15);
                             enemyDynamicBulletYValues.Add(enemyYValues[i] + 55);
+
                             //sends shot towards the player
                             enemyDynamicBulletXIncreases.Add((playerX - enemyXValues[i]) / 50);
                             enemyDynamicBulletYIncreases.Add((playerY - enemyYValues[i]) / 50);
@@ -955,7 +984,9 @@ namespace Agalag
                         }
                     }
                 }
-                if (tracker % 75 == 0)
+
+                //heavy bullet spawns
+                if (tracker % 65 == 0)
                 {
                     for (int i = 0; i < enemyXValues.Count(); i++)
                     {
@@ -971,6 +1002,7 @@ namespace Agalag
                         }
                     }
                 }
+
                 checkMusic();
 
                 tracker++;
@@ -1140,7 +1172,8 @@ namespace Agalag
                 //*************PLAYER 2 BULLETS******************
                 for (int i = 0; i < p2BulletXValues.Count(); i++)
                 {
-                    if (p2BulletYValues[i] < 0)//removes offscreen shots
+                    //removes offscreen shots
+                    if (p2BulletYValues[i] < 0)
                     {
                         removeP2Bullets(i);
                     }
@@ -1168,7 +1201,8 @@ namespace Agalag
                         }
                         if (calculateDistance(p2BulletXValues[i], (playerX + 30), p2BulletYValues[i], playerY) < 30)
                         {
-                            switch (p2BulletTypeValues[i])//varies damage based on shot type
+                            //varies damage based on shot type
+                            switch (p2BulletTypeValues[i])
                             {
                                 case "light":
                                     playerHealth -= 2;
@@ -1178,11 +1212,13 @@ namespace Agalag
                                     playerHealth -= 3;
                                     removeP2Bullets(i);
                                     break;
-                                default: //covers spread shots
+                                default:
+                                    //covers spread shots
                                     playerHealth -= 1;
                                     removeP2Bullets(i);
                                     break;
                             }
+
                             hitPlayer.Open(new System.Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "boom.wav")));//sets boomplayer's sound
                             hitPlayer.Play();//plays hit sound
                         }
@@ -1210,7 +1246,9 @@ namespace Agalag
                     {
                         gameTimer.Enabled = false;
 
-                        for (int i = 0; i < 5; i++)//flashes player onscreen 5 times before restarting
+
+                        //flashes player onscreen 5 times before restarting
+                        for (int i = 0; i < 5; i++)
                         {
                             if (playerLives != 1)
                             {
@@ -1232,7 +1270,9 @@ namespace Agalag
 
                     }
                 }
-                if (player2Health <= 0 && gameOver == false)//player respawn
+
+                ///p2 respawn
+                if (player2Health <= 0 && gameOver == false)
                 {
                     if (player2Dying == false)
                     {
@@ -1286,16 +1326,8 @@ namespace Agalag
                     winner = "Player 2";
                     Refresh();
                     Thread.Sleep(5000);
-
-                    gameState = "title";
-                    gameTimer.Enabled = false;
-                    clearVariables();
                     Refresh();
-
-                    changeTitleVisibility(true);
-                    bgMusicPlayer.Open(new System.Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "bgMusic.mp3")));
-                    bgMusicPlayer.Play();// loops bg music
-
+                    quit();
                 }
                 if (player2Lives == 0)//ends game on player 2 death
                 {
@@ -1308,13 +1340,8 @@ namespace Agalag
                     winner = "Player 1";
                     Refresh();
                     Thread.Sleep(5000);
-                    gameState = "title";
-                    gameTimer.Enabled = false;
-                    clearVariables();
                     Refresh();
-                    changeTitleVisibility(true);
-                    bgMusicPlayer.Open(new System.Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "bgMusic.mp3")));
-                    bgMusicPlayer.Play();// loops bg music
+                    quit();
                 }
 
                 handleExplosions();
@@ -2022,18 +2049,14 @@ namespace Agalag
                     }
                 }
 
-                gameState = "title";
-
-                gameTimer.Enabled = false;
-                clearVariables();
+                
                 Refresh();
 
                 changeTitleVisibility(true);
                 entryBox.Visible = false;
                 enterNameButton.Visible = false;
-
-                bgMusicPlayer.Open(new System.Uri(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "bgMusic.mp3")));
-                bgMusicPlayer.Play();// loops bg music
+                FuckYou(Gareth);
+                quit();
             }
         }
 
@@ -2051,7 +2074,7 @@ namespace Agalag
         //displays a messagebox that show the controls
         private void controlsButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("******CONTROLS******\n\nPlayer 1 uses WASD to move and Space to shoot \nPlayer 2 uses IJKL to move and M to shoot\nPress P to pause game");
+            MessageBox.Show("               ******CONTROLS******\n\nPlayer 1 uses WASD to move and Space to shoot \nPlayer 2 uses IJKL to move and M to shoot\nPress P to pause game");
         }
 
         //function to cause the title forms to become invisible or visible
