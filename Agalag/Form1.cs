@@ -2055,7 +2055,6 @@ namespace Agalag
                 changeTitleVisibility(true);
                 entryBox.Visible = false;
                 enterNameButton.Visible = false;
-                FuckYou(Gareth);
                 quit();
             }
         }
@@ -2074,7 +2073,7 @@ namespace Agalag
         //displays a messagebox that show the controls
         private void controlsButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("               ******CONTROLS******\n\nPlayer 1 uses WASD to move and Space to shoot \nPlayer 2 uses IJKL to move and M to shoot\nPress P to pause game");
+            MessageBox.Show("                          ******CONTROLS******\n\nPlayer 1 uses WASD to move and Space to shoot \nPlayer 2 uses IJKL to move and M to shoot\nPress P to pause game");
         }
 
         //function to cause the title forms to become invisible or visible
